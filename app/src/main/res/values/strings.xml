@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mercari</string>
+    <string name="e_mail">E-mail</string>
+    <string name="email_toast">Por favor preencha o campo e-mail.</string>
+    <string name="category">category</string>
+    <string name="category_url">category_url</string>
+    <string name="token">token</string>
+    <string name="connection_error">Error requesting data. Please check your connection or try again later</string>
+</resources>
