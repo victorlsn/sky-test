@@ -19,8 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by victorlsn on 23/07/18.
+ * This class implements the single instance controller used for making API calls.
  */
-
 public class Controller {
 
     private static Controller instance = null;
@@ -33,6 +33,7 @@ public class Controller {
                 .Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15, TimeUnit.SECONDS);
+
         if (MyApplication.getInstance().shouldUseCache()) {
             okHttpBuilder.cache(new Cache(cacheDir, 10 * 1024 * 1024)) // 10 MB
                     .addInterceptor(new Interceptor() {
@@ -52,6 +53,7 @@ public class Controller {
         OkHttpClient client = okHttpBuilder.build();
 
         String BASE_URL = "https://s3-ap-northeast-1.amazonaws.com/m-et/Android/json/";
+
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)

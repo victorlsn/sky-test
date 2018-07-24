@@ -17,6 +17,9 @@ import mercari.victorlsn.mercari.R;
 
 public class AppTools {
 
+    /**
+     * This method checks the app connectivity.
+     */
     public static boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) MyApplication.getInstance().getApplicationContext()
@@ -26,6 +29,9 @@ public class AppTools {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    /**
+     * This method invokes a Toast on the screen.
+     */
     public static boolean showToast(Context context, String message, int duration){
         if(null == context) return false;
         if(null == message || message.isEmpty()) return false;
@@ -37,7 +43,9 @@ public class AppTools {
         return false;
     }
 
-
+    /**
+     * This method calculates the ideal number of columns in a grid based on recycler item size and screen size.
+     */
     public static int getGridSpanCount(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
         DisplayMetrics displayMetrics = new DisplayMetrics();

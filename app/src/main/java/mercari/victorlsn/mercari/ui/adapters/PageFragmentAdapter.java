@@ -12,6 +12,7 @@ import java.util.List;
  */
 
 public class PageFragmentAdapter extends FragmentPagerAdapter {
+
     public List<Fragment> getmFragments() {
         return mFragments;
     }

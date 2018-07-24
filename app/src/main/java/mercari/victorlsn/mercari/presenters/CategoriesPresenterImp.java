@@ -46,5 +46,6 @@ public class CategoriesPresenterImp implements CategoriesMVP.Presenter {
         view.showProgressBar(false);
         if(null == message || message.isEmpty()) return;
         view.showToast(message, Toast.LENGTH_SHORT);
+        view.receiveCategoriesFailure();
     }
 }

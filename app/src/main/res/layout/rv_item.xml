@@ -22,10 +22,10 @@
         android:id="@+id/sold_out_iv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/product_iv"
+        app:layout_constraintTop_toTopOf="@+id/product_iv"
         app:srcCompat="@drawable/badge_soldout"
-        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintHeight_percent="0.24"
         app:layout_constraintWidth_percent="0.5"/>
 
     <TextView

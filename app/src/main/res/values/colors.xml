@@ -5,4 +5,5 @@
     <color name="colorAccent">#c15d5d</color>
     <color name="colorAccentLight">#BBBBBB</color>
     <color name="actionbarColor">#494A4E</color>
+    <color name="fabColor">#E84442</color>
 </resources>

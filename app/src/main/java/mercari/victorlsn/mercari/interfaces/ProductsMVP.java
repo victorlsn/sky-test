@@ -19,5 +19,6 @@ public interface ProductsMVP {
     }
     interface View extends BaseMVP.View{
         void receiveProductsSuccessfully(List<Product> products);
+        void receiveProductsFailure();
     }
 }

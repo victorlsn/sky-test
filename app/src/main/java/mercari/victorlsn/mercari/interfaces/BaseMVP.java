@@ -11,6 +11,8 @@ public interface BaseMVP {
 
     interface View{
         void showProgressBar(boolean show);
+
+
         void showToast(String message, int duration);
     }
 }

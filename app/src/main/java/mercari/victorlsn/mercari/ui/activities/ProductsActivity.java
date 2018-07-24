@@ -7,14 +7,21 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import mercari.victorlsn.mercari.MyApplication;
 import mercari.victorlsn.mercari.R;
 import mercari.victorlsn.mercari.beans.Category;
 import mercari.victorlsn.mercari.event.NetworkConnectedEvent;
@@ -23,6 +30,7 @@ import mercari.victorlsn.mercari.presenters.CategoriesPresenterImp;
 import mercari.victorlsn.mercari.ui.adapters.PageFragmentAdapter;
 import mercari.victorlsn.mercari.ui.fragments.ProductsFragment;
 import mercari.victorlsn.mercari.util.AppTools;
+import mercari.victorlsn.mercari.util.PreferencesUtil;
 
 /**
  * Created by victorlsn on 23/07/18.
@@ -35,14 +43,26 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     ViewPager viewPager;
     @BindView(R.id.toolbar_viewpager)
     Toolbar toolbar;
+    @BindView(R.id.refresh_layout_error_icon_iv)
+    ImageView errorImageView;
+    @BindView(R.id.refresh_layout_message_tv)
+    TextView errorTextView;
+
+    @OnClick(R.id.fab)
+    public void onClickFab() {
+        showToast(getString(R.string.function_not_implemented), Toast.LENGTH_SHORT);
+    }
 
     private CategoriesMVP.Presenter presenter;
     private ProgressDialog progressDialog;
     private ArrayList<Category> categories = new ArrayList<>();
+    private HashMap<String, String> categoriesHashMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), false);
+
         setContentView(R.layout.products_activity);
         initPresenter();
 
@@ -59,7 +79,7 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("categories", categories);
+        outState.putParcelableArrayList(getString(R.string.categories), categories);
 
         super.onSaveInstanceState(outState);
     }
@@ -68,9 +88,13 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        categories = savedInstanceState.getParcelableArrayList("categories");
+        categories = savedInstanceState.getParcelableArrayList(getString(R.string.categories));
 
         if(categories != null && categories.size() != 0) {
+            for (Category category : categories) {
+                categoriesHashMap.put(category.getName(), category.getData());
+            }
+
             setupFragments();
             setupTabClick();
         }
@@ -79,6 +103,9 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
         }
     }
 
+    /**
+     * This method initializes the current presenter.
+     */
     private void initPresenter() {
         if (null == presenter) {
             presenter = new CategoriesPresenterImp();
@@ -86,6 +113,9 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
         }
     }
 
+    /**
+     * This method initializes the ActionBar.
+     */
     private void prepareActionBar() {
         setSupportActionBar(toolbar);
 
@@ -99,17 +129,53 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
         actionBar.setLogo(R.drawable.icon_launcher);
     }
 
+    /**
+     * This method setups the fragments and its adapter, depending on whether the app should use fixed or dynamic categories.
+     * @see MyApplication#shouldUseFixedCategories()
+     */
     private void setupFragments() {
+        boolean shouldUseFixedCategories = MyApplication.getInstance().shouldUseFixedCategories();
+
         PageFragmentAdapter adapter = new PageFragmentAdapter(getSupportFragmentManager());
 
-        for (Category category : categories) {
-            ProductsFragment fragment = new ProductsFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.category), category.getName());
-            bundle.putString(getString(R.string.category_url), category.getData());
-            fragment.setArguments(bundle);
+        // If the app should use fixed/pre-ordered categories, this part of the code generates them manually.
+        if (shouldUseFixedCategories) {
 
-            adapter.addFragment(fragment, category.getName());
+            ProductsFragment menFragment = new ProductsFragment();
+            Bundle men = new Bundle();
+            men.putString(getString(R.string.category), getString(R.string.men_category));
+            men.putString(getString(R.string.category_url), categoriesHashMap.get(getString(R.string.men_category)));
+            menFragment.setArguments(men);
+            adapter.addFragment(menFragment, getString(R.string.men_category));
+
+
+            ProductsFragment allFragment = new ProductsFragment();
+            Bundle all = new Bundle();
+            all.putString(getString(R.string.category), getString(R.string.all_category));
+            all.putString(getString(R.string.category_url), categoriesHashMap.get(getString(R.string.all_category)));
+            allFragment.setArguments(all);
+            adapter.addFragment(allFragment, getString(R.string.all_category));
+
+            ProductsFragment womenFragment = new ProductsFragment();
+            Bundle women = new Bundle();
+            women.putString(getString(R.string.category), getString(R.string.women_category));
+            women.putString(getString(R.string.category_url), categoriesHashMap.get("Woman"));
+            womenFragment.setArguments(women);
+            adapter.addFragment(womenFragment, getString(R.string.women_category));
+
+        }
+
+        // If the app shouldn't use fixed/pre-ordered categories, this part of the code generates them automatically from the JSON received via API.
+        else {
+            for (Category category : categories) {
+                ProductsFragment fragment = new ProductsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.category), category.getName());
+                bundle.putString(getString(R.string.category_url), category.getData());
+                fragment.setArguments(bundle);
+
+                adapter.addFragment(fragment, category.getName());
+            }
         }
 
         viewPager.setAdapter(adapter);
@@ -118,15 +184,18 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     }
 
     /**
-     * Método responsável por configurar os icones na tab do view pager.
+     * This method setups the Tabs of the ViewPager
      */
     private void setupTabLayout(PageFragmentAdapter adapter) {
         tabLayout.setupWithViewPager(viewPager);
         for (int i = 0; i < adapter.getmFragmentTitles().size(); i++) {
-            tabLayout.getTabAt(i).setText(adapter.getmFragmentTitles().get(i));
+            tabLayout.getTabAt(i).setText(adapter.getTitle(i));
         }
     }
 
+    /**
+     * This method setups the Clicks on the Tabs of the ViewPager
+     */
     private void setupTabClick() {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -148,16 +217,21 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
 
     @Override
     public void showProgressBar(boolean show) {
-        if(show){
+        boolean isShowing = PreferencesUtil.checkBoolean(getString(R.string.showing_dialog));
+        if(show && !isShowing){
             progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Please wait");
-            progressDialog.setMessage("Retrieving products...");
+            progressDialog.setTitle(getString(R.string.dialog_wait));
+            progressDialog.setMessage(getString(R.string.dialog_retrieving));
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.show();
+
+            PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), true);
         }else {
-            if(null != progressDialog && progressDialog.isShowing()){
+            if(progressDialog != null && isShowing){
                 progressDialog.dismiss();
+
+                PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), false);
             }
         }
     }
@@ -171,8 +245,22 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     @Override
     public void receiveCategoriesSuccessfully(List<Category> categories) {
         this.categories = new ArrayList<>(categories);
+
+        for (Category category : categories) {
+            categoriesHashMap.put(category.getName(), category.getData());
+        }
+
+        errorImageView.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.GONE);
+
         setupFragments();
         setupTabClick();
+    }
+
+    @Override
+    public void receiveCategoriesFailure() {
+        errorImageView.setVisibility(View.VISIBLE);
+        errorTextView.setVisibility(View.VISIBLE);
     }
 
     @Subscribe

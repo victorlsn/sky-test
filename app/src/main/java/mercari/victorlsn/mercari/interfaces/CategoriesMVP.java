@@ -20,5 +20,6 @@ public interface CategoriesMVP {
     }
     interface View extends BaseMVP.View{
         void receiveCategoriesSuccessfully(List<Category> categories);
+        void receiveCategoriesFailure();
     }
 }
