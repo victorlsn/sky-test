@@ -26,15 +26,31 @@ public class Controller {
     private static Controller instance = null;
     private AppRestEndPoint apiCall;
 
+    /**
+     * This variable determines whether the app should use Cache for HTTP Calls.
+     */
+    private boolean useCache = false;
+
+    public boolean shouldUseCache() {
+        return useCache;
+    }
+
+    public void setUseCache(boolean useCache) {
+        this.useCache = useCache;
+    }
+
     private Controller() {
-        File cacheDir = MyApplication.getInstance().getApplicationContext().getCacheDir();
+        File cacheDir = null;
+        if (shouldUseCache()) {
+            cacheDir = MyApplication.getInstance().getApplicationContext().getCacheDir();
+        }
 
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient
                 .Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15, TimeUnit.SECONDS);
 
-        if (MyApplication.getInstance().shouldUseCache()) {
+        if (shouldUseCache()) {
             okHttpBuilder.cache(new Cache(cacheDir, 10 * 1024 * 1024)) // 10 MB
                     .addInterceptor(new Interceptor() {
                         @Override

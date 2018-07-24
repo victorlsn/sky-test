@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
 import mercari.victorlsn.mercari.broadcast.NetworkReceiver;
+import mercari.victorlsn.mercari.data.Controller;
 
 /**
  * Created by victorlsn on 23/07/18.
@@ -12,19 +13,10 @@ import mercari.victorlsn.mercari.broadcast.NetworkReceiver;
 
 public class MyApplication extends Application {
     private static MyApplication instance;
-
-    /**
-     * This variable determines whether the app should use Cache for HTTP Calls.
-     */
-    private boolean useCache = false;
     /**
      * This variable determines whether the app should use Fixed Categories.
      */
     private boolean fixedCategories = true;
-
-    public boolean shouldUseCache() {
-        return useCache;
-    }
 
     public boolean shouldUseFixedCategories() {
         return fixedCategories;
@@ -32,6 +24,7 @@ public class MyApplication extends Application {
 
     public MyApplication() {
         instance = this;
+        Controller.getInstance().setUseCache(false);
     }
 
     public static MyApplication getInstance() {
