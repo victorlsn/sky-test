@@ -18,10 +18,6 @@ public class MyApplication extends Application {
      */
     private boolean fixedCategories = true;
 
-    public boolean shouldUseFixedCategories() {
-        return fixedCategories;
-    }
-
     public MyApplication() {
         instance = this;
         Controller.getInstance().setUseCache(false);
@@ -29,6 +25,10 @@ public class MyApplication extends Application {
 
     public static MyApplication getInstance() {
         return instance;
+    }
+
+    public boolean shouldUseFixedCategories() {
+        return fixedCategories;
     }
 
     @Override

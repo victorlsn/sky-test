@@ -5,11 +5,11 @@ package mercari.victorlsn.mercari.interfaces;
  */
 
 public interface BaseMVP {
-    interface Presenter{
+    interface Presenter {
         boolean attachView(BaseMVP.View view);
     }
 
-    interface View{
+    interface View {
         void showProgressBar(boolean show);
 
 

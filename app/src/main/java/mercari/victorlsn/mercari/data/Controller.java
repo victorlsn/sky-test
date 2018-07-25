@@ -31,14 +31,6 @@ public class Controller {
      */
     private boolean useCache = false;
 
-    public boolean shouldUseCache() {
-        return useCache;
-    }
-
-    public void setUseCache(boolean useCache) {
-        this.useCache = useCache;
-    }
-
     private Controller() {
         File cacheDir = null;
         if (shouldUseCache()) {
@@ -84,6 +76,14 @@ public class Controller {
         }
 
         return instance;
+    }
+
+    public boolean shouldUseCache() {
+        return useCache;
+    }
+
+    public void setUseCache(boolean useCache) {
+        this.useCache = useCache;
     }
 
     public AppRestEndPoint doApiCall() {

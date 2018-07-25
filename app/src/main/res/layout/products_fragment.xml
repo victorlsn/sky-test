@@ -14,7 +14,7 @@
 
 
     <TextView
-        android:id="@+id/refresh_layout_message_tv"
+        android:id="@+id/error_layout_message_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -29,10 +29,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/refresh_layout_error_icon_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/error_layout_icon_iv" />
 
     <ImageView
-        android:id="@+id/refresh_layout_error_icon_iv"
+        android:id="@+id/error_layout_icon_iv"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"

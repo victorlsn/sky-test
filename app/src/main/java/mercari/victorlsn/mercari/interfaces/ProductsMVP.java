@@ -9,16 +9,21 @@ import mercari.victorlsn.mercari.beans.Product;
  */
 
 public interface ProductsMVP {
-    interface Model{
+    interface Model {
         void getProducts(String categoryUrl);
     }
-    interface Presenter extends BaseMVP.Presenter{
+
+    interface Presenter extends BaseMVP.Presenter {
         void requestProducts(String categoryUrl);
+
         void requestProductsSuccessfully(List<Product> products);
+
         void requestProductsFailure(String message);
     }
-    interface View extends BaseMVP.View{
+
+    interface View extends BaseMVP.View {
         void receiveProductsSuccessfully(List<Product> products);
+
         void receiveProductsFailure();
     }
 }

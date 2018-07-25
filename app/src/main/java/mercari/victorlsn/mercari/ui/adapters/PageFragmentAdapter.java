@@ -14,19 +14,19 @@ import java.util.List;
 
 public class PageFragmentAdapter extends FragmentPagerAdapter {
 
+    private final List<Fragment> mFragments = new ArrayList<>();
+    private final List<String> mFragmentTitles = new ArrayList<>();
+
+    public PageFragmentAdapter(FragmentManager fm) {
+        super(fm);
+    }
+
     public List<Fragment> getmFragments() {
         return mFragments;
     }
 
     public List<String> getmFragmentTitles() {
         return mFragmentTitles;
-    }
-
-    private final List<Fragment> mFragments = new ArrayList<>();
-    private final List<String> mFragmentTitles = new ArrayList<>();
-
-    public PageFragmentAdapter(FragmentManager fm) {
-        super(fm);
     }
 
     public void addFragment(Fragment fragment, String title) {
@@ -50,7 +50,7 @@ public class PageFragmentAdapter extends FragmentPagerAdapter {
         return null;
     }
 
-    public String getTitle(int position){
+    public String getTitle(int position) {
         return mFragmentTitles.get(position);
     }
 

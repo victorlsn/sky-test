@@ -1,10 +1,10 @@
 package mercari.victorlsn.mercari.ui.activities;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
@@ -48,12 +48,20 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     ViewPager viewPager;
     @BindView(R.id.toolbar_viewpager)
     Toolbar toolbar;
-    @BindView(R.id.refresh_layout_error_icon_iv)
+    @BindView(R.id.error_layout_icon_iv)
     ImageView errorImageView;
-    @BindView(R.id.refresh_layout_message_tv)
+    @BindView(R.id.error_layout_message_tv)
     TextView errorTextView;
     @BindView(R.id.btn_menu)
     ImageView sortMenuButton;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    private CategoriesMVP.Presenter presenter;
+    private ProgressDialog progressDialog;
+    private ArrayList<Category> categories = new ArrayList<>();
+    private HashMap<String, String> categoriesHashMap = new HashMap<>();
+    private PageFragmentAdapter adapter;
+    private SortEnum currentSortingMethod;
 
     @OnClick(R.id.fab)
     public void onClickFab() {
@@ -65,30 +73,30 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
         setupPopupMenu();
     }
 
-    private CategoriesMVP.Presenter presenter;
-    private ProgressDialog progressDialog;
-    private ArrayList<Category> categories = new ArrayList<>();
-    private HashMap<String, String> categoriesHashMap = new HashMap<>();
-    private PageFragmentAdapter adapter;
-    private SortEnum currentSortingMethod;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), false);
 
+        init();
+
+        if (savedInstanceState == null && (categories == null || categories.size() == 0) && (progressDialog == null || !progressDialog.isShowing())) {
+            presenter.requestCategories();
+        }
+    }
+
+    private void init() {
         setContentView(R.layout.products_activity);
         initPresenter();
 
         prepareActionBar();
 
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
-        if(savedInstanceState == null && (categories == null || categories.size() == 0) && (progressDialog == null || !progressDialog.isShowing())) {
-            presenter.requestCategories();
-        }
+        fab.setBackgroundTintList(getResources().getColorStateList(R.color.fabColor));
+        fab.setImageResource(R.drawable.ic_camera);
     }
 
     @Override
@@ -104,15 +112,14 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
 
         categories = savedInstanceState.getParcelableArrayList(getString(R.string.categories));
 
-        if(categories != null && categories.size() != 0) {
+        if (categories != null && categories.size() != 0) {
             for (Category category : categories) {
                 categoriesHashMap.put(category.getName(), category.getData());
             }
 
             setupFragments();
             setupTabClick();
-        }
-        else {
+        } else {
             presenter.requestCategories();
         }
     }
@@ -195,12 +202,13 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
 
     /**
      * This method setups the fragments and its adapter, depending on whether the app should use fixed or dynamic categories.
+     *
      * @see MyApplication#shouldUseFixedCategories()
      */
     private void setupFragments() {
         boolean shouldUseFixedCategories = MyApplication.getInstance().shouldUseFixedCategories();
 
-         adapter = new PageFragmentAdapter(getSupportFragmentManager());
+        adapter = new PageFragmentAdapter(getSupportFragmentManager());
 
         // If the app should use fixed/pre-ordered categories, this part of the code generates them manually.
         if (shouldUseFixedCategories) {
@@ -282,7 +290,7 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     @Override
     public void showProgressBar(boolean show) {
         boolean isShowing = PreferencesUtil.checkBoolean(getString(R.string.showing_dialog));
-        if(show && !isShowing){
+        if (show && !isShowing) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setTitle(getString(R.string.dialog_wait));
             progressDialog.setMessage(getString(R.string.dialog_retrieving));
@@ -291,8 +299,8 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
             progressDialog.show();
 
             PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), true);
-        }else {
-            if(progressDialog != null && isShowing){
+        } else {
+            if (progressDialog != null && isShowing) {
                 progressDialog.dismiss();
 
                 PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), false);
@@ -330,7 +338,7 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     @Subscribe
     public void onEvent(NetworkConnectedEvent event) {
         initPresenter();
-        if((categories == null || categories.size() == 0) && (progressDialog == null || !progressDialog.isShowing())) {
+        if ((categories == null || categories.size() == 0) && (progressDialog == null || !progressDialog.isShowing())) {
             presenter.requestCategories();
         }
     }

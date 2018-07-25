@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -36,18 +35,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private onItemClickListener mItemClickListener;
 
-    public void setOnItemClickListener(onItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
-    }
-
-    public interface onItemClickListener {
-        void onItemClickListener(View view, String url);
-    }
-
     public ProductAdapter(Context context, List<Product> products) {
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.products = products;
+    }
+
+    public void setOnItemClickListener(onItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
     }
 
     public void sortBy(SortEnum sortingMethod) {
@@ -109,6 +104,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return sortedProducts.size();
     }
 
+    public interface onItemClickListener {
+        void onItemClickListener(View view, String url);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.product_iv)

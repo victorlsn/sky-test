@@ -8,8 +8,24 @@ import android.os.Parcelable;
  */
 
 public class Category implements Parcelable {
+    public static final Creator<Category> CREATOR = new Creator<Category>() {
+        @Override
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
     private String name;
     private String data;
+
+    private Category(Parcel in) {
+        this.name = in.readString();
+        this.data = in.readString();
+    }
 
     public String getName() {
         return name;
@@ -37,21 +53,4 @@ public class Category implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.data);
     }
-
-    private Category(Parcel in) {
-        this.name = in.readString();
-        this.data = in.readString();
-    }
-
-    public static final Creator<Category> CREATOR = new Creator<Category>() {
-        @Override
-        public Category createFromParcel(Parcel in) {
-            return new Category(in);
-        }
-
-        @Override
-        public Category[] newArray(int size) {
-            return new Category[size];
-        }
-    };
 }

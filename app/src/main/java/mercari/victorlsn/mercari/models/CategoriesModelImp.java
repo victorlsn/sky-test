@@ -19,7 +19,7 @@ import retrofit2.Response;
  * Created by victorlsn on 23/07/18.
  */
 
-public class CategoriesModelImp implements CategoriesMVP.Model{
+public class CategoriesModelImp implements CategoriesMVP.Model {
     private CategoriesMVP.Presenter presenter;
 
     public CategoriesModelImp(CategoriesMVP.Presenter presenter) {
@@ -34,14 +34,12 @@ public class CategoriesModelImp implements CategoriesMVP.Model{
                 if (null != response.body()) {
                     List<Category> categories = response.body();
                     presenter.requestCategoriesSuccessfully(categories);
-                }
-                else {
+                } else {
                     try {
                         Gson gson = new Gson();
                         ErrorResponse errorResponse = gson.fromJson(response.errorBody().string(), ErrorResponse.class);
                         presenter.requestCategoriesFailure(errorResponse.getError().getMessage());
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         Log.e("Exception: ", e.getLocalizedMessage());
                         presenter.requestCategoriesFailure("Error requesting data. Please check your connection or try again later");
                     }

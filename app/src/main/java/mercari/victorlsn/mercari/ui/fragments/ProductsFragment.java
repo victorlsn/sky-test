@@ -2,7 +2,6 @@ package mercari.victorlsn.mercari.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,12 +37,12 @@ import mercari.victorlsn.mercari.util.PreferencesUtil;
  * Created by victorlsn on 23/07/18.
  */
 
-public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
+public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.refresh_layout_error_icon_iv)
+    @BindView(R.id.error_layout_icon_iv)
     ImageView errorImageView;
-    @BindView(R.id.refresh_layout_message_tv)
+    @BindView(R.id.error_layout_message_tv)
     TextView errorTextView;
 
     private ProductsMVP.Presenter presenter;
@@ -71,11 +70,10 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
             categoryUrl = bundle.getString(getString(R.string.category_url), "");
         }
 
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
-
 
 
     @Override
@@ -97,10 +95,9 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
             categoryUrl = savedInstanceState.getString(getString(R.string.category_url));
         }
 
-        if(products != null && products.size() != 0) {
+        if (products != null && products.size() != 0) {
             configAdapter(products);
-        }
-        else if (categoryUrl != null) {
+        } else if (categoryUrl != null) {
             presenter.requestProducts(categoryUrl);
         }
     }
@@ -160,7 +157,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
     /**
      * This method setups the RecyclerView used for displaying products.
      */
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         LinearLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), AppTools.getGridSpanCount(getActivity()));
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(false);
@@ -172,7 +169,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
     /**
      * This method setups the ProductAdapter with the products received via API
      */
-    private void configAdapter(List<Product> products){
+    private void configAdapter(List<Product> products) {
         adapter = new ProductAdapter(getActivity(), products);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new ProductAdapter.onItemClickListener() {
@@ -182,7 +179,8 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
                 intent.putExtra("imageUrl", url);
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(getActivity(), view, "TRANSITION");
-                ActivityCompat.startActivity(getActivity(), intent, options.toBundle());            }
+                ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+            }
         });
         adapter.sortBy(currentSortingMethod);
     }
@@ -190,7 +188,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
     @Override
     public void showProgressBar(boolean show) {
         boolean isShowing = PreferencesUtil.checkBoolean(getString(R.string.showing_dialog));
-        if(show && !isShowing){
+        if (show && !isShowing) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle(getString(R.string.dialog_wait));
             progressDialog.setMessage(getString(R.string.dialog_retrieving));
@@ -199,8 +197,8 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
             progressDialog.show();
 
             PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), true);
-        }else {
-            if(progressDialog != null && isShowing){
+        } else {
+            if (progressDialog != null && isShowing) {
                 progressDialog.dismiss();
 
                 PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), false);

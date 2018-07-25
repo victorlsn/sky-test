@@ -32,11 +32,11 @@ public class AppTools {
     /**
      * This method invokes a Toast on the screen.
      */
-    public static boolean showToast(Context context, String message, int duration){
-        if(null == context) return false;
-        if(null == message || message.isEmpty()) return false;
+    public static boolean showToast(Context context, String message, int duration) {
+        if (null == context) return false;
+        if (null == message || message.isEmpty()) return false;
 
-        if(duration != Toast.LENGTH_SHORT && duration != Toast.LENGTH_LONG) return false;
+        if (duration != Toast.LENGTH_SHORT && duration != Toast.LENGTH_LONG) return false;
 
         Toast.makeText(context, message, duration).show();
 
@@ -50,7 +50,7 @@ public class AppTools {
         Display display = activity.getWindowManager().getDefaultDisplay();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         display.getMetrics(displayMetrics);
-        float screenWidth  = displayMetrics.widthPixels;
+        float screenWidth = displayMetrics.widthPixels;
         float cellWidth = activity.getResources().getDimension(R.dimen.recycler_item_size);
         return Math.round(screenWidth / cellWidth);
     }

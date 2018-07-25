@@ -37,14 +37,12 @@ public class ProductsModelImp implements ProductsMVP.Model {
                 if (null != response.body()) {
                     List<Product> products = response.body();
                     presenter.requestProductsSuccessfully(products);
-                }
-                else {
+                } else {
                     try {
                         Gson gson = new Gson();
                         ErrorResponse errorResponse = gson.fromJson(response.errorBody().string(), ErrorResponse.class);
                         presenter.requestProductsFailure(errorResponse.getError().getMessage());
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         Log.e("Exception: ", e.getLocalizedMessage());
                         presenter.requestProductsFailure("Error requesting data. Please check your connection or try again later");
                     }

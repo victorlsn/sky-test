@@ -14,7 +14,7 @@ import mercari.victorlsn.mercari.models.ProductsModelImp;
  */
 
 public class ProductsPresenterImp implements ProductsMVP.Presenter {
-    private ProductsMVP.View  view;
+    private ProductsMVP.View view;
     private ProductsMVP.Model model;
 
     public ProductsPresenterImp() {
@@ -23,7 +23,7 @@ public class ProductsPresenterImp implements ProductsMVP.Presenter {
 
     @Override
     public boolean attachView(BaseMVP.View view) {
-        if(null == view) return false;
+        if (null == view) return false;
         this.view = (ProductsMVP.View) view;
 
         return true;
@@ -44,7 +44,7 @@ public class ProductsPresenterImp implements ProductsMVP.Presenter {
     @Override
     public void requestProductsFailure(String message) {
         view.showProgressBar(false);
-        if(null == message || message.isEmpty()) return;
+        if (null == message || message.isEmpty()) return;
         view.showToast(message, Toast.LENGTH_SHORT);
         view.receiveProductsFailure();
     }
