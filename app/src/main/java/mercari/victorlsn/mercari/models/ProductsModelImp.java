@@ -29,7 +29,10 @@ public class ProductsModelImp implements ProductsMVP.Model {
 
     @Override
     public void getProducts(final String categoryUrl) {
-        //TODO if categoryUrl == null
+        if (categoryUrl == null || categoryUrl.isEmpty()) {
+            presenter.requestProductsFailure("Error requesting data. Please check your connection or try again later");
+            return;
+        }
 
         Controller.getInstance().doApiCall().getProducts(categoryUrl).enqueue(new Callback<List<Product>>() {
             @Override
