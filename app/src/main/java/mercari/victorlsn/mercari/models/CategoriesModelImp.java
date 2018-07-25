@@ -9,6 +9,7 @@ import java.util.List;
 
 import mercari.victorlsn.mercari.beans.Category;
 import mercari.victorlsn.mercari.beans.ErrorResponse;
+import mercari.victorlsn.mercari.beans.Product;
 import mercari.victorlsn.mercari.data.Controller;
 import mercari.victorlsn.mercari.interfaces.CategoriesMVP;
 import retrofit2.Call;
@@ -48,7 +49,8 @@ public class CategoriesModelImp implements CategoriesMVP.Model {
 
             @Override
             public void onFailure(@NonNull Call<List<Category>> call, Throwable t) {
-                presenter.requestCategoriesFailure(t.getMessage());
+                Log.e("Exception: ", t.getLocalizedMessage());
+                presenter.requestCategoriesFailure("Error requesting products. Please check your connection or try again later");
             }
         });
     }

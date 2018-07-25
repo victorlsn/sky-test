@@ -16,7 +16,8 @@
     <string name="all_category">All</string>
     <string name="women_category">Women</string>
     <string name="showing_dialog">IS_SHOWING_DIALOG</string>
-    <string name="empty_error">Sorry, it\'s not possible to retrieve data from server right now. Please check your connection or try again later.</string>
+    <string name="empty_error_activity">Sorry, it\'s not possible to retrieve data from server right now. Please check your connection or tap here to try again.</string>
+    <string name="empty_error_fragment">Sorry, it\'s not possible to retrieve data from server right now. Please check your connection or swipe down to try again.</string>
     <string name="menu_default">Default</string>
     <string name="menu_name">Sort by product name</string>
     <string name="menu_status">Sort by product status</string>

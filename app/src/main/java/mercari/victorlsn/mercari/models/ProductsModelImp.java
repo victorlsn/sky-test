@@ -51,7 +51,8 @@ public class ProductsModelImp implements ProductsMVP.Model {
 
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, Throwable t) {
-                presenter.requestProductsFailure(t.getMessage());
+                Log.e("Exception: ", t.getLocalizedMessage());
+                presenter.requestProductsFailure("Error requesting products. Please check your connection or try again later");
             }
         });
     }

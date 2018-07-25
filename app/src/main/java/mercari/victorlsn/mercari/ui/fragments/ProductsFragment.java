@@ -7,12 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,6 +42,8 @@ import mercari.victorlsn.mercari.util.PreferencesUtil;
 public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.error_layout_icon_iv)
     ImageView errorImageView;
     @BindView(R.id.error_layout_message_tv)
@@ -116,6 +120,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
         initRecyclerView();
         configAdapter(products);
         initPresenter();
+        initSwipeRefreshLayout();
     }
 
     @Subscribe
@@ -154,6 +159,16 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
         }
     }
 
+    private void initSwipeRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.requestProducts(categoryUrl);
+            }
+        });
+    }
+
     /**
      * This method setups the RecyclerView used for displaying products.
      */
@@ -187,21 +202,23 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
 
     @Override
     public void showProgressBar(boolean show) {
-        boolean isShowing = PreferencesUtil.checkBoolean(getString(R.string.showing_dialog));
-        if (show && !isShowing) {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle(getString(R.string.dialog_wait));
-            progressDialog.setMessage(getString(R.string.dialog_retrieving));
-            progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+        if(!swipeRefreshLayout.isRefreshing()) {
+            boolean isShowing = PreferencesUtil.checkBoolean(getString(R.string.showing_dialog));
+            if (show && !isShowing) {
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setTitle(getString(R.string.dialog_wait));
+                progressDialog.setMessage(getString(R.string.dialog_retrieving));
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
-            PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), true);
-        } else {
-            if (progressDialog != null && isShowing) {
-                progressDialog.dismiss();
+                PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), true);
+            } else {
+                if (progressDialog != null && isShowing) {
+                    progressDialog.dismiss();
 
-                PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), false);
+                    PreferencesUtil.setBooleanValue(getString(R.string.showing_dialog), false);
+                }
             }
         }
     }
@@ -224,6 +241,11 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
         }
 
         this.products = new ArrayList<>(products);
+
+        if (swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+            showToast("Products updated with success", Toast.LENGTH_SHORT);
+        }
     }
 
     /**
@@ -231,7 +253,13 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
      */
     @Override
     public void receiveProductsFailure() {
-        errorImageView.setVisibility(View.VISIBLE);
-        errorTextView.setVisibility(View.VISIBLE);
+        if (products != null && products.size() == 0) {
+            errorImageView.setVisibility(View.VISIBLE);
+            errorTextView.setVisibility(View.VISIBLE);
+        }
+
+        if (swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 }

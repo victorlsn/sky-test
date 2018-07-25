@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -48,10 +49,12 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     ViewPager viewPager;
     @BindView(R.id.toolbar_viewpager)
     Toolbar toolbar;
-    @BindView(R.id.error_layout_icon_iv)
-    ImageView errorImageView;
-    @BindView(R.id.error_layout_message_tv)
-    TextView errorTextView;
+    @BindView(R.id.error_layout)
+    CoordinatorLayout errorLayout;
+//    @BindView(R.id.error_layout_icon_iv)
+//    ImageView errorImageView;
+//    @BindView(R.id.error_layout_message_tv)
+//    TextView errorTextView;
     @BindView(R.id.btn_menu)
     ImageView sortMenuButton;
     @BindView(R.id.fab)
@@ -62,6 +65,11 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     private HashMap<String, String> categoriesHashMap = new HashMap<>();
     private PageFragmentAdapter adapter;
     private SortEnum currentSortingMethod;
+
+    @OnClick(R.id.error_layout)
+    public void onClickErrorLayout() {
+        presenter.requestCategories();
+    }
 
     @OnClick(R.id.fab)
     public void onClickFab() {
@@ -163,9 +171,11 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
                         break;
                 }
 
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    ProductsFragment fragment = (ProductsFragment) adapter.getItem(i);
-                    fragment.setAdapterSortingMethod(currentSortingMethod);
+                if (adapter != null && adapter.getCount() != 0) {
+                    for (int i = 0; i < adapter.getCount(); i++) {
+                        ProductsFragment fragment = (ProductsFragment) adapter.getItem(i);
+                        fragment.setAdapterSortingMethod(currentSortingMethod);
+                    }
                 }
 
                 return false;
@@ -322,8 +332,7 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
             categoriesHashMap.put(category.getName(), category.getData());
         }
 
-        errorImageView.setVisibility(View.GONE);
-        errorTextView.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
 
         setupFragments();
         setupTabClick();
@@ -331,8 +340,7 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
 
     @Override
     public void receiveCategoriesFailure() {
-        errorImageView.setVisibility(View.VISIBLE);
-        errorTextView.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.VISIBLE);
     }
 
     @Subscribe

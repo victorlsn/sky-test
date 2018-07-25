@@ -58,31 +58,34 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-    <ImageView
-        android:id="@+id/error_layout_icon_iv"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="100dp"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:src="@drawable/icon_launcher"
-        android:alpha="0.5"/>
-    <TextView
-        android:id="@+id/error_layout_message_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/empty_error"/>
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/error_layout">
+        <ImageView
+            android:id="@+id/error_layout_icon_iv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="100dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/icon_launcher"
+            android:alpha="0.5"/>
+        <TextView
+            android:id="@+id/error_layout_message_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="@string/empty_error_activity"/>
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
