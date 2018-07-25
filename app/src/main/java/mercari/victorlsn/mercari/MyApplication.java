@@ -20,9 +20,6 @@ public class MyApplication extends Application {
 
     public MyApplication() {
         instance = this;
-
-        // Sets the useCache option in Controller class.
-        Controller.getInstance().setUseCache(false);
     }
 
     public static MyApplication getInstance() {

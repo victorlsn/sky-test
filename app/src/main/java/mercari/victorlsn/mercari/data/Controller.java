@@ -29,7 +29,7 @@ public class Controller {
     /**
      * This variable determines whether the app should use Cache for HTTP Calls.
      */
-    private boolean useCache = false;
+    private boolean useCache = true;
 
     private Controller() {
         File cacheDir = null;
@@ -80,10 +80,6 @@ public class Controller {
 
     public boolean shouldUseCache() {
         return useCache;
-    }
-
-    public void setUseCache(boolean useCache) {
-        this.useCache = useCache;
     }
 
     public AppRestEndPoint doApiCall() {

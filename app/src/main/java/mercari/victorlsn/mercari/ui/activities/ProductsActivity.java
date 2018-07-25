@@ -255,6 +255,7 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
             }
         }
 
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
 
         setupTabLayout(adapter);
