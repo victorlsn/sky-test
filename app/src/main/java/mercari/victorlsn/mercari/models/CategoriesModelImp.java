@@ -9,7 +9,6 @@ import java.util.List;
 
 import mercari.victorlsn.mercari.beans.Category;
 import mercari.victorlsn.mercari.beans.ErrorResponse;
-import mercari.victorlsn.mercari.beans.Product;
 import mercari.victorlsn.mercari.data.Controller;
 import mercari.victorlsn.mercari.interfaces.CategoriesMVP;
 import retrofit2.Call;

@@ -202,7 +202,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
 
     @Override
     public void showProgressBar(boolean show) {
-        if(!swipeRefreshLayout.isRefreshing()) {
+        if (!swipeRefreshLayout.isRefreshing()) {
             boolean isShowing = PreferencesUtil.checkBoolean(getString(R.string.showing_dialog));
             if (show && !isShowing) {
                 progressDialog = new ProgressDialog(getActivity());
