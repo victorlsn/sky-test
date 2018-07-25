@@ -57,6 +57,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
     private boolean isVisibleToUser = false;
     private ProductAdapter adapter;
     private SortEnum currentSortingMethod;
+    private boolean isStartingActivity = false;
 
     @Override
     protected int layoutToInflate() {
@@ -104,6 +105,13 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
         } else if (categoryUrl != null) {
             presenter.requestProducts(categoryUrl);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        isStartingActivity = false;
     }
 
     public void setAdapterSortingMethod(SortEnum sortingMethod) {
@@ -201,9 +209,13 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
             public void onItemClickListener(View view, String url) {
                 Intent intent = new Intent(getActivity(), ImageViewerActivity.class);
                 intent.putExtra("imageUrl", url);
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(getActivity(), view, "TRANSITION");
-                ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+
+                if (!isStartingActivity) {
+                    isStartingActivity = true;
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(getActivity(), view, "TRANSITION");
+                    ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+                }
             }
         });
         adapter.sortBy(currentSortingMethod);
