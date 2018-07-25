@@ -51,10 +51,6 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     Toolbar toolbar;
     @BindView(R.id.error_layout)
     CoordinatorLayout errorLayout;
-//    @BindView(R.id.error_layout_icon_iv)
-//    ImageView errorImageView;
-//    @BindView(R.id.error_layout_message_tv)
-//    TextView errorTextView;
     @BindView(R.id.btn_menu)
     ImageView sortMenuButton;
     @BindView(R.id.fab)
