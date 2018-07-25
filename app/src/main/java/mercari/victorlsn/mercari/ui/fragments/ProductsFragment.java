@@ -2,8 +2,8 @@ package mercari.victorlsn.mercari.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import mercari.victorlsn.mercari.MyApplication;
 import mercari.victorlsn.mercari.R;
 import mercari.victorlsn.mercari.beans.Product;
+import mercari.victorlsn.mercari.enums.SortEnum;
 import mercari.victorlsn.mercari.event.NetworkConnectedEvent;
 import mercari.victorlsn.mercari.interfaces.ProductsMVP;
 import mercari.victorlsn.mercari.presenters.ProductsPresenterImp;
@@ -50,9 +50,10 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
     private ProgressDialog progressDialog;
     private String category;
     private String categoryUrl;
-    ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
     private boolean isVisibleToUser = false;
-
+    private ProductAdapter adapter;
+    private SortEnum currentSortingMethod;
 
     @Override
     protected int layoutToInflate() {
@@ -101,6 +102,13 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
         }
         else if (categoryUrl != null) {
             presenter.requestProducts(categoryUrl);
+        }
+    }
+
+    public void setAdapterSortingMethod(SortEnum sortingMethod) {
+        currentSortingMethod = sortingMethod;
+        if (adapter != null) {
+            adapter.sortBy(sortingMethod);
         }
     }
 
@@ -156,14 +164,16 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
         LinearLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), AppTools.getGridSpanCount(getActivity()));
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(false);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(AppTools.getGridSpanCount(getActivity()), 16, true));
+        if (recyclerView.getItemDecorationCount() == 0) {
+            recyclerView.addItemDecoration(new GridSpacingItemDecoration(AppTools.getGridSpanCount(getActivity()), 16, true));
+        }
     }
 
     /**
-     * This method setups the ProductAdapter with the products received via PA
+     * This method setups the ProductAdapter with the products received via API
      */
     private void configAdapter(List<Product> products){
-        ProductAdapter adapter = new ProductAdapter(getActivity(), products);
+        adapter = new ProductAdapter(getActivity(), products);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new ProductAdapter.onItemClickListener() {
             @Override
@@ -174,6 +184,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
                         makeSceneTransitionAnimation(getActivity(), view, "TRANSITION");
                 ActivityCompat.startActivity(getActivity(), intent, options.toBundle());            }
         });
+        adapter.sortBy(currentSortingMethod);
     }
 
     @Override
@@ -202,6 +213,9 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
         AppTools.showToast(getActivity(), message, duration);
     }
 
+    /**
+     * This method is setups the screen in response to a successful API call.
+     */
     @Override
     public void receiveProductsSuccessfully(List<Product> products) {
         errorImageView.setVisibility(View.GONE);
@@ -214,6 +228,9 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View{
         this.products = new ArrayList<>(products);
     }
 
+    /**
+     * This method is setups the screen in response to a unsuccessful API call.
+     */
     @Override
     public void receiveProductsFailure() {
         errorImageView.setVisibility(View.VISIBLE);

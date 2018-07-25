@@ -17,5 +17,11 @@
     <string name="women_category">Women</string>
     <string name="showing_dialog">IS_SHOWING_DIALOG</string>
     <string name="empty_error">Sorry, it\'s not possible to retrieve data from server right now. Please check your connection or try again later.</string>
+    <string name="menu_default">Default</string>
+    <string name="menu_name">Sort by product name</string>
+    <string name="menu_status">Sort by product status</string>
+    <string name="menu_price">Sort by product price</string>
+    <string name="menu_likes">Sort by # of likes</string>
+    <string name="menu_comments">Sort by # of comments</string>
 
 </resources>

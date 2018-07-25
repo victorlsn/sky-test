@@ -3,6 +3,7 @@ package mercari.victorlsn.mercari.ui.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +52,15 @@ public class PageFragmentAdapter extends FragmentPagerAdapter {
 
     public String getTitle(int position){
         return mFragmentTitles.get(position);
+    }
+
+    /**
+     * This method override is needed to ensure the fragments are reutilized on screen orientation change
+     */
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Object ret = super.instantiateItem(container, position);
+        mFragments.set(position, (Fragment) ret);
+        return ret;
     }
 }

@@ -13,12 +13,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mercari.victorlsn.mercari.R;
 import mercari.victorlsn.mercari.beans.Product;
+import mercari.victorlsn.mercari.enums.SortEnum;
 
 /**
  * Created by victorlsn on 23/07/18.
@@ -27,6 +30,7 @@ import mercari.victorlsn.mercari.beans.Product;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private List<Product> products;
+    private List<Product> sortedProducts;
     private LayoutInflater mInflater;
     private Context context;
 
@@ -46,6 +50,38 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         this.products = products;
     }
 
+    public void sortBy(SortEnum sortingMethod) {
+        sortedProducts = new ArrayList<>(products);
+        if (sortingMethod != null) {
+            switch (sortingMethod) {
+                case NAME:
+                    Collections.sort(sortedProducts, Product.NameComparator);
+                    break;
+
+                case STATUS:
+                    Collections.sort(sortedProducts, Product.StatusComparator);
+                    break;
+
+                case PRICE:
+                    Collections.sort(sortedProducts, Product.PriceComparator);
+                    break;
+
+                case LIKES:
+                    Collections.sort(sortedProducts, Product.LikesComparator);
+                    break;
+
+                case COMMENTS:
+                    Collections.sort(sortedProducts, Product.CommentsComparator);
+                    break;
+
+                default:
+                    break;
+            }
+
+            notifyDataSetChanged();
+        }
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,7 +91,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = products.get(position);
+        Product product = sortedProducts.get(position);
 
         Glide.with(context).load(product.getPhoto()).apply(new RequestOptions().centerCrop().placeholder(R.drawable.image_not_found)).into(holder.productImage);
 
@@ -70,7 +106,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return sortedProducts.size();
     }
 
 
@@ -98,7 +134,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClickListener(productImage, products.get(getAdapterPosition()).getPhoto());
+                mItemClickListener.onItemClickListener(productImage, sortedProducts.get(getAdapterPosition()).getPhoto());
             }
         }
     }

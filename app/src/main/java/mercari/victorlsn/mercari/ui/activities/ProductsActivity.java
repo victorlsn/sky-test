@@ -1,12 +1,16 @@
 package mercari.victorlsn.mercari.ui.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +28,7 @@ import butterknife.OnClick;
 import mercari.victorlsn.mercari.MyApplication;
 import mercari.victorlsn.mercari.R;
 import mercari.victorlsn.mercari.beans.Category;
+import mercari.victorlsn.mercari.enums.SortEnum;
 import mercari.victorlsn.mercari.event.NetworkConnectedEvent;
 import mercari.victorlsn.mercari.interfaces.CategoriesMVP;
 import mercari.victorlsn.mercari.presenters.CategoriesPresenterImp;
@@ -47,16 +52,25 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     ImageView errorImageView;
     @BindView(R.id.refresh_layout_message_tv)
     TextView errorTextView;
+    @BindView(R.id.btn_menu)
+    ImageView sortMenuButton;
 
     @OnClick(R.id.fab)
     public void onClickFab() {
         showToast(getString(R.string.function_not_implemented), Toast.LENGTH_SHORT);
     }
 
+    @OnClick(R.id.btn_menu)
+    public void onMenuClick() {
+        setupPopupMenu();
+    }
+
     private CategoriesMVP.Presenter presenter;
     private ProgressDialog progressDialog;
     private ArrayList<Category> categories = new ArrayList<>();
     private HashMap<String, String> categoriesHashMap = new HashMap<>();
+    private PageFragmentAdapter adapter;
+    private SortEnum currentSortingMethod;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +117,56 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
         }
     }
 
+
+    private void setupPopupMenu() {
+        PopupMenu popupMenu = new PopupMenu(this, sortMenuButton);
+        popupMenu.inflate(R.menu.sort_menu);
+        popupMenu.setGravity(Gravity.END);
+        popupMenu.show();
+        setMenuActions(popupMenu);
+    }
+
+    private void setMenuActions(final PopupMenu menu) {
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_sort_name:
+                        currentSortingMethod = SortEnum.NAME;
+
+                        break;
+                    case R.id.menu_sort_status:
+                        currentSortingMethod = SortEnum.STATUS;
+
+                        break;
+                    case R.id.menu_sort_price:
+                        currentSortingMethod = SortEnum.PRICE;
+
+                        break;
+                    case R.id.menu_sort_likes:
+                        currentSortingMethod = SortEnum.LIKES;
+
+                        break;
+                    case R.id.menu_sort_comments:
+                        currentSortingMethod = SortEnum.COMMENTS;
+                        break;
+
+                    case R.id.menu_sort_default:
+                        currentSortingMethod = SortEnum.DEFAULT;
+                        break;
+                }
+
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    ProductsFragment fragment = (ProductsFragment) adapter.getItem(i);
+                    fragment.setAdapterSortingMethod(currentSortingMethod);
+                }
+
+                return false;
+
+            }
+        });
+    }
+
     /**
      * This method initializes the current presenter.
      */
@@ -136,7 +200,7 @@ public class ProductsActivity extends BaseActivity implements CategoriesMVP.View
     private void setupFragments() {
         boolean shouldUseFixedCategories = MyApplication.getInstance().shouldUseFixedCategories();
 
-        PageFragmentAdapter adapter = new PageFragmentAdapter(getSupportFragmentManager());
+         adapter = new PageFragmentAdapter(getSupportFragmentManager());
 
         // If the app should use fixed/pre-ordered categories, this part of the code generates them manually.
         if (shouldUseFixedCategories) {
