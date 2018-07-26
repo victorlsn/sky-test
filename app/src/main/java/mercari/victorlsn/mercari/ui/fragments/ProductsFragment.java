@@ -176,8 +176,7 @@ public class ProductsFragment extends BaseFragment implements ProductsMVP.View {
                 // As this is a update, it should not rely on cache, so the call is only made when there's internet available.
                 if (AppTools.isOnline()) {
                     presenter.requestProducts(categoryUrl);
-                }
-                else {
+                } else {
                     swipeRefreshLayout.setRefreshing(false);
                     showToast(getString(R.string.connection_error), Toast.LENGTH_SHORT);
                 }

@@ -5,7 +5,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
 import mercari.victorlsn.mercari.broadcast.NetworkReceiver;
-import mercari.victorlsn.mercari.data.Controller;
 
 /**
  * Created by victorlsn on 23/07/18.
