@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mercari.victorlsn.mercari">
+    package="sky.victorlsn.test">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="mercari.victorlsn.mercari.MyApplication"
+        android:name="sky.victorlsn.test.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="mercari.victorlsn.mercari.ui.activities.ProductsActivity"
+            android:name="sky.victorlsn.test.ui.activities.MoviesActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="mercari.victorlsn.mercari.ui.activities.ImageViewerActivity"
+            android:name="sky.victorlsn.test.ui.activities.MovieDetailActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
     </application>

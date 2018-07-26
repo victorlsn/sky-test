@@ -6,23 +6,15 @@
         android:title="@string/menu_default"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/menu_sort_name"
-        android:title="@string/menu_name"
+        android:id="@+id/menu_sort_title"
+        android:title="@string/menu_title"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/menu_sort_status"
-        android:title="@string/menu_status"
+        android:id="@+id/menu_sort_duration"
+        android:title="@string/menu_duration"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/menu_sort_price"
-        android:title="@string/menu_price"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_sort_likes"
-        android:title="@string/menu_likes"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_sort_comments"
-        android:title="@string/menu_comments"
+        android:id="@+id/menu_sort_release_year"
+        android:title="@string/menu_release_year"
         app:showAsAction="ifRoom" />
 </menu>

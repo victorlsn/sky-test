@@ -1,96 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="170dp"
-    android:layout_height="205dp"
-    android:background="@android:color/white">
+    android:layout_height="275dp"
+    android:background="@color/actionbarColor">
 
     <ImageView
-        android:id="@+id/product_iv"
+        android:id="@+id/cover_iv"
         android:layout_width="170dp"
-        android:layout_height="170dp"
+        android:layout_height="255dp"
         android:layout_marginBottom="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/sold_out_iv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="@+id/product_iv"
-        app:layout_constraintTop_toTopOf="@+id/product_iv"
-        app:srcCompat="@drawable/badge_soldout"
-        app:layout_constraintHeight_percent="0.24"
-        app:layout_constraintWidth_percent="0.5" />
-
     <TextView
-        android:id="@+id/name_tv"
+        android:id="@+id/title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:text="Test"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/product_iv"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/likes_iv"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:text="Dr. Strange"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_like" />
-
-    <TextView
-        android:id="@+id/likes_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:text="0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/likes_iv" />
-
-    <ImageView
-        android:id="@+id/comments_iv"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/likes_tv"
-        app:srcCompat="@drawable/icon_comment" />
-
-    <TextView
-        android:id="@+id/comments_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:text="0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/comments_iv" />
-
-    <TextView
-        android:id="@+id/price_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="$ 1,900"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cover_iv" />
 
 </android.support.constraint.ConstraintLayout>

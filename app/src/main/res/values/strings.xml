@@ -1,25 +1,15 @@
 <resources>
-    <string name="app_name">Mercari</string>
-    <string name="category">category</string>
-    <string name="category_url">category_url</string>
-    <string name="connection_error">Error requesting data. Please check your connection or try again later.</string>
-    <string name="function_not_implemented">Function not yet implemented.</string>
-    <string name="categories">categories</string>
-    <string name="categories_hashmap">categories_hashmap</string>
-    <string name="products">products</string>
-    <string name="dialog_wait">Please wait</string>
-    <string name="dialog_retrieving">Retrieving products...</string>
-    <string name="men_category">Men</string>
-    <string name="all_category">All</string>
-    <string name="women_category">Women</string>
+    <string name="app_name">Sky</string>
+    <string name="connection_error">Erro buscando filmes. Por favor cheque a sua conexão ou tente novamente mais tarde.</string>
+    <string name="movies">movies</string>
+    <string name="dialog_wait">Aguarde</string>
+    <string name="dialog_retrieving">Buscando filmes…</string>
     <string name="showing_dialog">IS_SHOWING_DIALOG</string>
-    <string name="empty_error_activity">Sorry, it\'s not possible to retrieve data from server right now. Please check your connection or tap here to try again.</string>
-    <string name="empty_error_fragment">Sorry, it\'s not possible to retrieve data from server right now. Please check your connection or swipe down to try again.</string>
-    <string name="menu_default">Default</string>
-    <string name="menu_name">Sort by product name</string>
-    <string name="menu_status">Sort by product status</string>
-    <string name="menu_price">Sort by product price</string>
-    <string name="menu_likes">Sort by # of likes</string>
-    <string name="menu_comments">Sort by # of comments</string>
+    <string name="empty_error_activity">Desculpe, não foi possível buscar a lista de filmes agora. Por favor cheque a sua conexão ou tente atualizar puxando a tela para baixo.</string>
+    <string name="menu_default">Organização padrão</string>
+    <string name="menu_title">Organizar por título</string>
+    <string name="menu_release_year">Organizar por ano</string>
+    <string name="menu_duration">Organizar por duração</string>
+    <string name="filmes_atualizados">Filmes atualizados com sucesso</string>
 
 </resources>

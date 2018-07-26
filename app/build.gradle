@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "mercari.victorlsn.mercari"
+        applicationId "sky.victorlsn.test"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
