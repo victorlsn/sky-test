@@ -60,7 +60,7 @@ public class AppTools {
         if (duration.length == 1) {
             return Integer.parseInt(duration[0]);
         }
-        int durationInMinutes = Integer.parseInt(duration[0].replace("h", ""))*60 + Integer.parseInt(duration[1].replace("m", ""));
+        int durationInMinutes = Integer.parseInt(duration[0].replace("h", "")) * 60 + Integer.parseInt(duration[1].replace("m", ""));
 
         return durationInMinutes;
     }
@@ -71,7 +71,7 @@ public class AppTools {
             return timeString;
         }
 
-        int hours = Integer.parseInt(timeString)/60;
+        int hours = Integer.parseInt(timeString) / 60;
         int minutes = Integer.parseInt(timeString) % 60;
 
         return String.format("%sh %sm", hours, minutes);

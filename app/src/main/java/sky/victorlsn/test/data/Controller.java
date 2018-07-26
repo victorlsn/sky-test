@@ -6,9 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import sky.victorlsn.test.MyApplication;
-import sky.victorlsn.test.interfaces.AppRestEndPoint;
-import sky.victorlsn.test.util.AppTools;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -16,6 +13,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import sky.victorlsn.test.MyApplication;
+import sky.victorlsn.test.interfaces.AppRestEndPoint;
+import sky.victorlsn.test.util.AppTools;
 
 /**
  * Created by victorlsn on 26/07/18.

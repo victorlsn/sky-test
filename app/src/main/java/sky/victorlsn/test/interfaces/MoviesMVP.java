@@ -22,7 +22,7 @@ public interface MoviesMVP {
     }
 
     interface View extends BaseMVP.View {
-        void receiveMoviesSuccessfully(List<Movie> products);
+        void receiveMoviesSuccessfully(List<Movie> movies);
 
         void receiveMoviesFailure();
     }
