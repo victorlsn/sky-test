@@ -164,6 +164,9 @@ public class MoviesActivity extends BaseActivity implements MoviesMVP.View {
         if (movies == null || movies.size() == 0) {
             presenter.requestMovies();
         }
+        else {
+            init();
+        }
     }
 
 
